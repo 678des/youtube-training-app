@@ -1,3 +1,16 @@
+"use client";
+import { Suspense } from "react"; // 1. Suspenseをインポート
+import { newMovie as NewMovie } from "@/components/my/create-Edit-form";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+
+// 3. デフォルトエクスポートでは Suspense で包むだけにする
 export default function Page() {
-  return <div>新規作成</div>;
+  useEffect(() => {}, []);
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <h1>新しいトレーニングセットを作成</h1>
+      <NewMovie />
+    </Suspense>
+  );
 }
