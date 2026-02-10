@@ -13,6 +13,7 @@
 "use client";
 import ReactPlayer from "react-player";
 import { useState } from "react";
+import { newVideo } from "@/lib/my/newVideo";
 import { createClient } from "@/lib/supabase/client";
 import router from "next/navigation";
 import { useEffect } from "react";
@@ -154,9 +155,9 @@ export function newMovie() {
           <option value="other">その他</option>
         </select>
       </div>
-      {/* <button onClick={() => createMovieSet(user)}>
+      <button onClick={() => newVideo(title)}>
         上記の内容でトレーニング動画を登録する
-      </button> */}
+      </button>
     </div>
   );
 }
