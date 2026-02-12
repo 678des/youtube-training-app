@@ -55,7 +55,7 @@ export function newMovie() {
       title: title,
       level: level,
       group: target,
-      youtube_video_id: "hSBXH9i5MaY",
+      youtube_video_id: videoId,
     };
     //TODO title等の型を確認
     if (!title) {
