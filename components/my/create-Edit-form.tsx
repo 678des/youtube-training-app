@@ -9,12 +9,25 @@
 
 "use client";
 import ReactPlayer from "react-player";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { newVideo } from "@/lib/my/newVideo";
 import { ToastContainer, toast } from "react-toastify";
+import { useSearchParams } from "next/navigation";
+import { editVideo } from "@/lib/my/editVideo";
 
 export function newMovie() {
-  const isEditMode = true;
+  const mode = useSearchParams().get("mode");
+  const movieSetId = useSearchParams().get("id");
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  useEffect(() => {
+    if (mode == "edit") {
+      console.log("編集モードです");
+      setIsEditMode(true);
+    } else {
+      console.log("作成モードです", mode);
+    }
+  }, []);
 
   const [target, setGroup] = useState("chest");
   const [level, setlevel] = useState(9999);
@@ -51,12 +64,16 @@ export function newMovie() {
       return;
     }
 
-    newVideo(videoset);
+    //TODO editモードだったらeditVideoを追加
+    if (isEditMode) {
+      if (movieSetId) editVideo(movieSetId, videoset);
+    } else {
+      newVideo(videoset);
+    }
   };
 
   return (
     <div>
-      <h1>新しいトレーニングセット作成mode</h1>
       <div className="flex flex-col">
         <input
           type="text"
@@ -113,9 +130,15 @@ export function newMovie() {
           <option value="other">その他</option>
         </select>
       </div>
-      <button onClick={() => handleRegisterVideoSet()}>
-        上記の内容でトレーニング動画を登録する
-      </button>
+
+      {!isEditMode ? (
+        <button onClick={() => handleRegisterVideoSet()}>
+          上記の内容でトレーニング動画を登録する
+        </button>
+      ) : (
+        <button onClick={() => handleRegisterVideoSet()}>編集を確定する</button>
+      )}
+
       <ToastContainer />
     </div>
   );

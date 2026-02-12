@@ -1,5 +1,6 @@
 import ReactPlayer from "react-player";
 import { createClient } from "@/lib/supabase/server";
+import { EditVideo } from "@/components/my/EditVideo";
 
 export default async function Page({ params }: any) {
   const pathname = await params;
@@ -26,6 +27,7 @@ export default async function Page({ params }: any) {
 
   return (
     <div>
+      <EditVideo youtubeVideoSetId={pathname.id}></EditVideo>
       <h2>{video_title}</h2>
       <ReactPlayer src={`https://www.youtube.com/watch?v=${video_id}`} />
       <p>{video_level}</p>
