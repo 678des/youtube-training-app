@@ -1,6 +1,3 @@
-//TODO　もう、ここでURLInputはって、即座に反映すればいいだけでは？
-//編集機能つけるとしたらわざわざ二段階で設定する必要ない。
-
 // "LXb3EKWsInQ"
 // 標準的な形式: https://www.youtube.com/watch?v=xxxxxxxxxxx
 // 短縮形式: https://youtu.be/xxxxxxxxxxx （共有ボタンを押した時によく使われます）
@@ -14,9 +11,7 @@
 import ReactPlayer from "react-player";
 import { useState } from "react";
 import { newVideo } from "@/lib/my/newVideo";
-import { createClient } from "@/lib/supabase/client";
-import router from "next/navigation";
-import { useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
 export function newMovie() {
   const isEditMode = true;
@@ -24,12 +19,7 @@ export function newMovie() {
   const [target, setGroup] = useState("chest");
   const [level, setlevel] = useState(9999);
   const [title, settitle] = useState("新しいトレーニングセット");
-  const [movieId, setMovieId] = useState<string>("");
-  const [url, setUrl] = useState<string>("");
-
-  //   const supabase = await createClient();
-  //   const { data } = await supabase.auth.getClaims();
-  //   const user = data?.claims;
+  const [videoId, setUrl] = useState<string>("hSBXH9i5MaY");
 
   const handleURLInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     //正規表現をし、11桁のIDを取得
@@ -46,62 +36,23 @@ export function newMovie() {
       alert("正しいURLを貼ってくださいdd");
     }
   };
-  //TODO 一歩前に、確認画面を作る（以下の内容でセットします。よろしいですか）
-  //   async function createMovieSet(session: any) {
-  //     "use client";
-  //     let isSuccess = false;
-  //     if (!title) {
-  //       alert("タイトルを入力してください");
-  //       return;
-  //     }
 
-  //     try {
-  //       await supabase.from("movies").insert([
-  //         {
-  //           title: title,
-  //           user_id: `${user?.session_id}`,
-  //           level: level,
-  //           target: target,
-  //           url: url,
-  //         },
-  //       ]);
-  //       isSuccess = true;
-  //     } catch (error) {
-  //       console.error("エラー" + error);
-  //     }
-  //     if (!isSuccess) return;
-  //     router.redirect("/set-movie-list");
-  //   }
-  //   async function editMovieSet() {
-  //     //TODO ここで値が正確に入力されているか確認。空白だったらしっかり入力しろというアラート
-  //     console.log(title, url, level, target, movieId);
-  //     let isSuccess = false;
+  const handleRegisterVideoSet = () => {
+    const videoset = {
+      title: title,
+      level: level,
+      group: target,
+      youtube_video_id: "hSBXH9i5MaY",
+    };
+    //TODO title等の型を確認
+    if (!title) {
+      toast("タイトルは「文字,数字,〇〇」のみ使用できます。");
+      toast("タイトルを入力してください");
+      return;
+    }
 
-  //     if (user)
-  //       try {
-  //         await supabase
-  //           .from("movies")
-  //           .update({ title: title, url: url, level: level, target: target })
-  //           .eq("id", movieId)
-  //           .eq("user_id", user?.session_id);
-  //         isSuccess = true;
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     if (isSuccess) {
-  //       router.redirect("/set-movie-list");
-  //     }
-  //   }
-
-  //await supabase.from("todos").delete().eq("id", id);
-
-  const handleLevelChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setlevel(parseInt(event.target.value));
+    newVideo(videoset);
   };
-  const handleGroupChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setGroup(event.target.value);
-  };
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {};
 
   return (
     <div>
@@ -117,14 +68,14 @@ export function newMovie() {
       <div className="flex flex-col justify-center">
         <ReactPlayer
           className="m-auto"
-          src={`https://www.youtube.com/watch?v=${url}`}
+          src={`https://www.youtube.com/watch?v=${videoId}`}
           //TODO onError={}//動画が消された、存在しなかったときの処理
           //あ、前のページに戻って、アラートで存在しなかったって言えばいい
         ></ReactPlayer>
         <input
           type="text"
           onBlur={handleURLInputChange}
-          defaultValue={`https://www.youtube.com/watch?v=${url}`}
+          defaultValue={`https://www.youtube.com/watch?v=${videoId}`}
         />
       </div>
 
@@ -133,7 +84,10 @@ export function newMovie() {
           <h3>きつさ</h3>
           <p>(体力満タン時)</p>
         </div>
-        <select onChange={handleLevelChange} value={level}>
+        <select
+          onChange={(event) => setlevel(parseInt(event.target.value))}
+          value={level}
+        >
           <option value={1}>Lv1.楽</option>
           <option value={2}>Lv2.普通</option>
           <option value={3}>Lv3.きつい</option>
@@ -144,7 +98,11 @@ export function newMovie() {
       </div>
       <div className="flex items-center justify-center">
         <h3>鍛える部位</h3>
-        <select className="ml-auto" onChange={handleGroupChange} value={target}>
+        <select
+          className="ml-auto"
+          onChange={(event) => setGroup(event.target.value)}
+          value={target}
+        >
           <option value="chest">胸</option>
           <option value="back">背中</option>
           <option value="shoulders">肩</option>
@@ -155,9 +113,10 @@ export function newMovie() {
           <option value="other">その他</option>
         </select>
       </div>
-      <button onClick={() => newVideo(title)}>
+      <button onClick={() => handleRegisterVideoSet()}>
         上記の内容でトレーニング動画を登録する
       </button>
+      <ToastContainer />
     </div>
   );
 }
