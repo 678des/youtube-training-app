@@ -22,7 +22,7 @@ export function SetVideoList() {
 
           <Link className="bg-white" href={`sets/${data.video_set_id}`}>
             <img
-              src="https://img.youtube.com/vi/hSBXH9i5MaY/maxresdefault.jpg"
+              src={`https://img.youtube.com/vi/${data.youtube_video_id}/maxresdefault.jpg`}
               className="w-1/3"
             />
           </Link>
