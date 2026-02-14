@@ -11,7 +11,6 @@ export async function getTrainingLogs() {
   } catch (error) {
     console.log(error);
   }
-  console.log(data?.data, "data.data");
 
   if (!isSuccess) return "[{error}]";
   return data?.data;

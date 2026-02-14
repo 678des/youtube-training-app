@@ -15,7 +15,6 @@ export default function Page({ params }: { params: Promise<{ id: number }> }) {
       const para = await params;
       console.log(para);
       const video = await getVideoInfo(String(para.id));
-      console.log(video, "ここ？");
       if (!video) return;
       setVideoSet(video[0]);
     };
@@ -26,7 +25,6 @@ export default function Page({ params }: { params: Promise<{ id: number }> }) {
     level,
     youtube_video_id,
   }: CreateTrainingLogSet) => {
-    console.log("まず");
     await createTrainingLog({
       group: group,
       level: level,

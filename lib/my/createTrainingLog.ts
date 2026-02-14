@@ -1,7 +1,5 @@
 "use server";
 import { createClient } from "@/lib/supabase/server";
-import { group } from "console";
-import { title } from "process";
 
 export interface CreateTrainingLogSet {
   group: string;
@@ -15,9 +13,7 @@ export async function createTrainingLog(set: CreateTrainingLogSet) {
   let isSuccess = false;
 
   try {
-    console.log("!!!");
     if (!user?.sub) return;
-    console.log("!!!2");
     await supabase.from("training_logs").insert({
       group: set.group,
       level: set.level,
@@ -25,7 +21,6 @@ export async function createTrainingLog(set: CreateTrainingLogSet) {
       user: user.sub,
     });
     isSuccess = true;
-    console.log("!!!22");
   } catch (err) {
     console.log(err);
   }
