@@ -1,37 +1,61 @@
+"use client";
+
 import ReactPlayer from "react-player";
-import { createClient } from "@/lib/supabase/server";
+import { getVideoInfo } from "@/lib/my/getVideoInfo";
+import { CreateTrainingLogSet } from "@/lib/my/createTrainingLog";
+import { createTrainingLog } from "@/lib/my/createTrainingLog";
+import { useState, useEffect } from "react";
+import { Suspense } from "react";
 
-export default async function Page({ params }: any) {
-  const pathname = await params;
-  const supabase = await createClient();
-  const userVideoCreated = await supabase
-    .from("videos")
-    .select("*")
-    .eq("video_set_id", pathname.id);
-  const video = userVideoCreated?.data;
+export default function Page({ params }: { params: Promise<{ id: number }> }) {
+  const [videoSet, setVideoSet] = useState<any>();
 
-  if (!video) return <>データの取得に失敗しました</>;
-
-  const videoUserId = video[0].user;
-
-  const { data } = await supabase.auth.getClaims();
-  const userId = data?.claims.sub;
-
-  if (userId !== videoUserId) return <>このページを見る権限がありません</>;
-
-  const video_id = video[0].youtube_video_id;
-  const video_title = video[0].title;
-  const video_level = video[0].level;
-  const video_group = video[0].group;
+  useEffect(() => {
+    const getVideo = async () => {
+      const para = await params;
+      console.log(para);
+      const video = await getVideoInfo(String(para.id));
+      if (!video) return;
+      setVideoSet(video[0]);
+    };
+    getVideo();
+  }, []);
+  const handleSetTrainingLog = async ({
+    group,
+    level,
+    youtube_video_id,
+  }: CreateTrainingLogSet) => {
+    await createTrainingLog({
+      group: group,
+      level: level,
+      youtube_video_id: youtube_video_id,
+    });
+  };
 
   return (
-    <div>
-      <h2>{video_title}</h2>
-      <ReactPlayer src={`https://www.youtube.com/watch?v=${video_id}`} />
-      <p>{video_level}</p>
-      <p>{video_group}</p>
+    <Suspense>
+      {videoSet && (
+        <>
+          <h2>{videoSet.title}</h2>
+          <ReactPlayer
+            src={`https://www.youtube.com/watch?v=${videoSet.youtube_video_id}`}
+          />
+          <p>{videoSet.level}</p>
+          <p>{videoSet.group}</p>
 
-      <button>この動画を完了</button>
-    </div>
+          <button
+            onClick={() =>
+              handleSetTrainingLog({
+                group: videoSet.group,
+                level: videoSet.level,
+                youtube_video_id: videoSet.youtube_video_id,
+              })
+            }
+          >
+            この動画を完了
+          </button>
+        </>
+      )}
+    </Suspense>
   );
 }
