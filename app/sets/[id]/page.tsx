@@ -6,13 +6,16 @@ import { CreateTrainingLogSet } from "@/lib/my/createTrainingLog";
 import { createTrainingLog } from "@/lib/my/createTrainingLog";
 import { useState, useEffect } from "react";
 import { Suspense } from "react";
+import { EditVideo } from "@/components/my/EditVideo";
 
 export default function Page({ params }: { params: Promise<{ id: number }> }) {
   const [videoSet, setVideoSet] = useState<any>();
+  const [videoSetId, setVideoSetId] = useState<string>();
 
   useEffect(() => {
     const getVideo = async () => {
       const para = await params;
+      setVideoSetId(String(para.id));
       console.log(para);
       const video = await getVideoInfo(String(para.id));
       if (!video) return;
@@ -34,8 +37,9 @@ export default function Page({ params }: { params: Promise<{ id: number }> }) {
 
   return (
     <Suspense>
-      {videoSet && (
+      {videoSet && videoSetId && (
         <>
+          <EditVideo youtubeVideoSetId={videoSetId}></EditVideo>
           <h2>{videoSet.title}</h2>
           <ReactPlayer
             src={`https://www.youtube.com/watch?v=${videoSet.youtube_video_id}`}
