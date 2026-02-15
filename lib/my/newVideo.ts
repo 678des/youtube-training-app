@@ -28,6 +28,7 @@ export async function newVideo(videoset: CreateVideoSet) {
     console.log(err);
   }
   if (isSuccess) {
-    redirect("/");
+    redirect("/sets");
+    //TODO飛んだ時に、５秒間ほど、今登録したセットを強調するアニメーションを作成
   }
 }

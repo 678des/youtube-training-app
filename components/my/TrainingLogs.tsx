@@ -14,7 +14,7 @@ export default function TrainingLog() {
 
   const getUserName = async () => {
     const user = await getUser();
-    return user?.email;
+    setUserName(user?.email);
   };
 
   const fetchTrainingLog = async () => {
@@ -25,7 +25,7 @@ export default function TrainingLog() {
   };
   useEffect(() => {
     fetchTrainingLog();
-    setUserName(getUserName());
+    getUserName();
   }, []);
 
   return (

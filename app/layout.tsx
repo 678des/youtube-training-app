@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Suspense } from "react";
+import { NavVar } from "@/components/my/myAppHeader";
 import "./globals.css";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -28,7 +29,8 @@ export default function RootLayout({
   return (
     <Suspense>
       <html lang="en" suppressHydrationWarning>
-        <body className={`${geistSans.className} antialiased`}>
+        <body className="">
+          <NavVar />
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

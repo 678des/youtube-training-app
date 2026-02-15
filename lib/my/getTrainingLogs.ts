@@ -3,15 +3,20 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function getTrainingLogs() {
   const supabase = await createClient();
-  let data;
+  const { data } = await supabase.auth.getClaims();
+  const user = data?.claims;
+  let res;
   let isSuccess = false;
   try {
-    data = await supabase.from("training_logs").select("*");
+    res = await supabase
+      .from("training_logs")
+      .select("*")
+      .eq("user", user?.sub);
     isSuccess = true;
   } catch (error) {
     console.log(error);
   }
 
   if (!isSuccess) return "[{error}]";
-  return data?.data;
+  return res?.data;
 }

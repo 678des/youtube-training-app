@@ -7,10 +7,12 @@ import { createTrainingLog } from "@/lib/my/createTrainingLog";
 import { useState, useEffect } from "react";
 import { Suspense } from "react";
 import { EditVideo } from "@/components/my/EditVideo";
+import { useRouter } from "next/navigation";
 
 export default function Page({ params }: { params: Promise<{ id: number }> }) {
   const [videoSet, setVideoSet] = useState<any>();
   const [videoSetId, setVideoSetId] = useState<string>();
+  const router = useRouter();
 
   useEffect(() => {
     const getVideo = async () => {
@@ -28,11 +30,14 @@ export default function Page({ params }: { params: Promise<{ id: number }> }) {
     level,
     youtube_video_id,
   }: CreateTrainingLogSet) => {
-    await createTrainingLog({
+    const result = await createTrainingLog({
       group: group,
       level: level,
       youtube_video_id: youtube_video_id,
     });
+
+    alert(result);
+    router.push("/logs");
   };
 
   return (
