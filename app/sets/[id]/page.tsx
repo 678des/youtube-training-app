@@ -7,6 +7,7 @@ import { createTrainingLog } from "@/lib/my/createTrainingLog";
 import { useState, useEffect } from "react";
 import { Suspense } from "react";
 import { EditVideo } from "@/components/my/EditVideo";
+import { DeteleVideoSetButton } from "@/components/my/DeleteVideo";
 import { useRouter } from "next/navigation";
 
 export default function Page({ params }: { params: Promise<{ id: number }> }) {
@@ -45,6 +46,9 @@ export default function Page({ params }: { params: Promise<{ id: number }> }) {
       {videoSet && videoSetId && (
         <>
           <EditVideo youtubeVideoSetId={videoSetId}></EditVideo>
+          <DeteleVideoSetButton
+            youtubeVideoSetId={videoSetId}
+          ></DeteleVideoSetButton>
           <h2>{videoSet.title}</h2>
           <ReactPlayer
             src={`https://www.youtube.com/watch?v=${videoSet.youtube_video_id}`}
