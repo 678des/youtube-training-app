@@ -68,11 +68,35 @@
 }
 
 body {
-  background-color: black;
   color: rgb(255, 255, 255);
+  min-height: 100vh;
 }
 
 div {
   justify-items: auto;
   position: relative;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  color: white;
+  z-index: 1000;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  background-color: rgba(15, 23, 42);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid #1e293b;
+  width: 100%;
+}
+
+main {
+  margin-top: 60px; /* ヘッダーの高さ分調整 */
+  padding: 20px;
 }

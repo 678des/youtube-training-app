@@ -30,15 +30,17 @@ export default function RootLayout({
     <Suspense>
       <html lang="en" suppressHydrationWarning>
         <body className="">
-          <NavVar />
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+          <div className="min-h-screen bg-slate-950 text-slate-50">
+            <NavVar />
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </div>
         </body>
       </html>
     </Suspense>
