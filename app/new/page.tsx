@@ -9,8 +9,10 @@ export default function Page() {
   useEffect(() => {}, []);
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <h1>新しいトレーニングセットを作成</h1>
-      <NewMovie />
+      <main>
+        <h1>新しいトレーニングセットを作成</h1>
+        <NewMovie />
+      </main>
     </Suspense>
   );
 }
