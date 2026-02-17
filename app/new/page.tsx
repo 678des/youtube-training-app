@@ -10,7 +10,6 @@ export default function Page() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <main>
-        <h1>新しいトレーニングセットを作成</h1>
         <NewMovie />
       </main>
     </Suspense>
